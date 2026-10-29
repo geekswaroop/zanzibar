@@ -73,8 +73,8 @@ func (c *tchannelOutboundCall) finish(ctx context.Context, err error) {
 	// write logs
 	if err == nil {
 		// logFields is expensive, so build it only when the debug entry is written
-		if ce := c.contextLogger.Check(zapcore.DebugLevel, "stub"); ce != nil {
-			c.contextLogger.Debug(ctx, "Finished an outgoing client TChannel request", c.logFields(ctx)...)
+		if ce := c.contextLogger.Check(zapcore.DebugLevel, "Finished an outgoing client TChannel request"); ce != nil {
+			ce.Write(accumulateLogFields(ctx, c.logFields(ctx))...)
 		}
 	} else {
 		fields := append(c.logFields(ctx), zap.Error(err))
